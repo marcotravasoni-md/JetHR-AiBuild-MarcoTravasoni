@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="it" translate="no" class="notranslate">
+<head>
+<meta charset="UTF-8">
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prototipo Jet HR - Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --jet-confetti: #DFEB57;
+    --jet-marshland: #11150A;
+    --jet-gray-light: #F4F5F4;
+    --jet-border: #E2E4E2;
+    --jet-text-muted: #6B726A;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--jet-gray-light);
+    color: var(--jet-marshland);
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    margin: 0;
+  }
+
+  .calculator-container {
+    background: white;
+    max-width: 600px;
+    width: 100%;
+    border-radius: 24px;
+    box-shadow: 0 12px 32px rgba(17, 21, 10, 0.08);
+    padding: 40px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .badge {
+    background-color: var(--jet-marshland);
+    color: var(--jet-confetti);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+
+  .header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.5px;
+  }
+
+  .header p {
+    color: var(--jet-text-muted);
+    font-size: 15px;
+    margin: 0;
+  }
+
+  .input-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .input-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  label {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  input, select {
+    padding: 16px;
+    border: 1px solid var(--jet-border);
+    border-radius: 12px;
+    font-size: 16px;
+    outline: none;
+    font-family: 'Inter', sans-serif;
+    background: white;
+    transition: all 0.2s;
+  }
+
+  input:focus, select:focus {
+    border-color: var(--jet-marshland);
+    box-shadow: 0 0 0 4px rgba(17, 21, 10, 0.05);
+  }
+
+  button.primary-btn {
+    width: 100%;
+    background-color: var(--jet-confetti);
+    color: var(--jet-marshland);
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 25px;
+  }
+
+  button.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(223, 235, 87, 0.4);
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  /* Barra Grafica Ripartizione */
+  .distribution-container {
+    margin-bottom: 25px;
+    background: var(--jet-gray-light);
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .distribution-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .bar-track {
+    height: 12px;
+    background: var(--jet-border);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+  }
+
+  .bar-netto {
+    background-color: var(--jet-marshland);
+    height: 100%;
+    transition: width 0.4s ease;
+  }
+
+  .bar-tasse {
+    background-color: #E03E3E;
+    height: 100%;
+    transition: width 0.4s ease;
+  }
+
+  .cards-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+
+  .card {
+    flex: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    border: 1px solid var(--jet-border);
+  }
+
+  .card.highlight {
+    background: var(--jet-marshland);
+    color: white;
+    border: none;
+  }
+
+  .card h3 {
+    margin: 0 0 8px 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.8;
+  }
+
+  .card.highlight h3 {
+    color: var(--jet-confetti);
+    opacity: 1;
+  }
+
+  .card p {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .breakdown h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    font-weight: 600;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: var(--jet-gray-light);
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 15px;
+    border-bottom: 1px solid rgba(17, 21, 10, 0.05);
+  }
+
+  li:last-child {
+    border-bottom: none;
+  }
+
+  .negative { color: #E03E3E; font-weight: 500;}
+  .positive { color: #238636; font-weight: 600;}
+  
+  .ai-insights {
+    margin-top: 25px;
+    background: linear-gradient(145deg, #f9fbef, #edf3bd);
+    border: 1px solid var(--jet-confetti);
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  .ai-insights::before {
+    content: "✨ Jet AI Insight";
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--jet-marshland);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .ai-insights p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--jet-marshland);
+  }
+
+  button.secondary-btn {
+    width: 100%;
+    margin-top: 20px;
+    background: transparent;
+    border: 1px solid var(--jet-marshland);
+    color: var(--jet-marshland);
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  button.secondary-btn:hover {
+    background: var(--jet-marshland);
+    color: white;
+  }
+</style>
+</head>
+<body translate="no" class="notranslate">
+<div class="calculator-container">
+  <div class="header">
+    <div class="badge">Product Builder Task</div>
+    <h2>Proiezione Netto</h2>
+    <p>Calcolatore stipendio con logiche semplificate per Milano, 2024</p>
+  </div>
+  
+  <div class="input-grid">
+    <div class="input-field">
+      <label for="ral">RAL Lorda (€)</label>
+      <input type="number" id="ral" placeholder="es. 35000" />
+    </div>
+    <div class="input-field">
+      <label for="mensilita">Mensilità</label>
+      <select id="mensilita">
+        <option value="13" selected>13 Mensilità</option>
+        <option value="14">14 Mensilità</option>
+      </select>
+    </div>
+  </div>
+
+  <button id="calculate-btn" class="primary-btn">Genera Proiezione</button>
+
+  <div id="results" class="results-section hidden">
+    
+    <!-- Barra Visiva Ripartizione -->
+    <div class="distribution-container">
+      <div class="distribution-title">
+        <span id="lbl-pct-netto">Netto: 0%</span>
+        <span id="lbl-pct-tasse">Tasse: 0%</span>
+      </div>
+      <div class="bar-track">
+        <div id="bar-netto" class="bar-netto" style="width: 0%;"></div>
+        <div id="bar-tasse" class="bar-tasse" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="cards-container">
+      <div class="card highlight">
+        <h3 id="card-mensile-title">Netto Mensile</h3>
+        <p id="netto-mensile">€ 0</p>
+      </div>
+      <div class="card">
+        <h3>Netto Annuale</h3>
+        <p id="netto-annuale">€ 0</p>
+      </div>
+    </div>
+    
+    <div class="breakdown">
+      <h3>Dettaglio Trattenute</h3>
+      <ul>
+        <li>RAL di partenza: <span id="out-ral"></span></li>
+        <li>INPS (9.19%): <span class="negative" id="out-inps"></span></li>
+        <li>Imponibile Fiscale: <span id="out-imponibile"></span></li>
+        <li>IRPEF Lorda: <span class="negative" id="out-irpeflorda"></span></li>
+        <li>Detrazioni Lavoro: <span class="positive" id="out-detrazioni"></span></li>
+        <li>Add. Reg. Lombardia: <span class="negative" id="out-addreg"></span></li>
+        <li>Add. Com. Milano: <span class="negative" id="out-addcom"></span></li>
+        <li style="font-weight: 700; margin-top: 10px; border-top: 2px solid #E2E4E2; padding-top: 15px;">
+          Totale Tasse: <span class="negative" id="out-tot-tasse"></span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="ai-insights">
+      <p id="ai-text"></p>
+    </div>
+
+    <button id="copy-btn" class="secondary-btn">📋 Copia Riepilogo Simulazione</button>
+
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const calculateBtn = document.getElementById('calculate-btn');
+  const copyBtn = document.getElementById('copy-btn');
+  let currentSummaryText = "";
+
+  // Addizionale regionale Lombardia 2024 - aliquote progressive per scaglioni
+  // (0-15k: 1,23% | 15k-28k: 1,58% | 28k-50k: 1,72% | oltre 50k: 1,73%)
+  function calcolaAddRegionale(imponibile) {
+    if (imponibile <= 15000) {
+      return imponibile * 0.0123;
+    } else if (imponibile <= 28000) {
+      return (15000 * 0.0123) + ((imponibile - 15000) * 0.0158);
+    } else if (imponibile <= 50000) {
+      return (15000 * 0.0123) + (13000 * 0.0158) + ((imponibile - 28000) * 0.0172);
+    } else {
+      return (15000 * 0.0123) + (13000 * 0.0158) + (22000 * 0.0172) + ((imponibile - 50000) * 0.0173);
+    }
+  }
+  
+  if (calculateBtn) {
+    calculateBtn.addEventListener('click', () => {
+      const ral = parseFloat(document.getElementById('ral').value);
+      const mensilita = parseInt(document.getElementById('mensilita').value, 10);
+      
+      if (isNaN(ral) || ral <= 0) {
+        alert("Inserisci una RAL valida e maggiore di zero.");
+        return;
+      }
+
+      // 1. Calcoli Fiscali
+      const inps = ral * 0.0919;
+      const imponibile = ral - inps;
+      
+      let irpefLorda = 0;
+      if (imponibile <= 28000) irpefLorda = imponibile * 0.23;
+      else if (imponibile <= 50000) irpefLorda = (28000 * 0.23) + ((imponibile - 28000) * 0.35);
+      else irpefLorda = (28000 * 0.23) + (22000 * 0.35) + ((imponibile - 50000) * 0.43);
+      
+      let detrazioni = 0;
+      if (imponibile <= 15000) detrazioni = Math.max(690, 1955); 
+      else if (imponibile <= 28000) detrazioni = 1910 + 1190 * ((28000 - imponibile) / 13000);
+      else if (imponibile <= 50000) detrazioni = 1910 * ((50000 - imponibile) / 22000);
+      else detrazioni = 0;
+      
+      if (detrazioni > irpefLorda) detrazioni = irpefLorda;
+      
+      const addRegionale = calcolaAddRegionale(imponibile);
+      const addComunale = imponibile <= 23000 ? 0 : imponibile * 0.008;
+      
+      const tasseTotali = inps + (irpefLorda - detrazioni) + addRegionale + addComunale;
+      const nettoAnnuale = ral - tasseTotali;
+      const nettoMensile = nettoAnnuale / mensilita; 
+
+      // 2. Percentuali per la Barra
+      const pctNetto = ((nettoAnnuale / ral) * 100).toFixed(1);
+      const pctTasse = ((tasseTotali / ral) * 100).toFixed(1);
+
+      // 3. Formatting
+      const formatCur = (num) => new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(num);
+
+      document.getElementById('card-mensile-title').textContent = `Netto Mensile (${mensilita} Mesi)`;
+      document.getElementById('netto-mensile').textContent = formatCur(nettoMensile);
+      document.getElementById('netto-annuale').textContent = formatCur(nettoAnnuale);
+      
+      document.getElementById('out-ral').textContent = formatCur(ral);
+      document.getElementById('out-inps').textContent = "- " + formatCur(inps);
+      document.getElementById('out-imponibile').textContent = formatCur(imponibile);
+      document.getElementById('out-irpeflorda').textContent = "- " + formatCur(irpefLorda);
+      document.getElementById('out-detrazioni').textContent = "+ " + formatCur(detrazioni);
+      document.getElementById('out-addreg').textContent = "- " + formatCur(addRegionale);
+      document.getElementById('out-addcom').textContent = "- " + formatCur(addComunale);
+      document.getElementById('out-tot-tasse').textContent = formatCur(tasseTotali);
+      
+      // Aggiornamento Barra Visiva
+      document.getElementById('lbl-pct-netto').textContent = `Netto: ${pctNetto}%`;
+      document.getElementById('lbl-pct-tasse').textContent = `Tasse e INPS: ${pctTasse}%`;
+      document.getElementById('bar-netto').style.width = `${pctNetto}%`;
+      document.getElementById('bar-tasse').style.width = `${pctTasse}%`;
+
+      // 4. AI Insights Message
+      let aiMessage = "";
+      if (ral < 25000) {
+        aiMessage = `Il tuo carico fiscale stimato è del ${pctTasse}%. Con questa RAL, sei pienamente idoneo a beneficiare dell'esenzione totale dell'addizionale comunale a Milano.`;
+      } else if (ral >= 25000 && ral <= 40000) {
+        aiMessage = `Attualmente versi il ${pctTasse}% della tua RAL in tasse. Un suggerimento strategico: se negoziassi 1.000€ di Welfare Aziendale o Buoni Pasto invece di un aumento monetario, questi sarebbero 100% detassati, aumentando il tuo potere d'acquisto reale.`;
+      } else {
+        aiMessage = `Con una RAL elevata, il tuo carico fiscale raggiunge il ${pctTasse}%. Per ottimizzare il netto, valuta l'introduzione di Fringe Benefit (es. auto aziendale o rimborso utenze) che godono di soglie di esenzione specifiche.`;
+      }
+      document.getElementById('ai-text').textContent = aiMessage;
+
+      // Salvataggio stringa riepilogo per il tasto Copia
+      currentSummaryText = `Proiezione Stipendio Netto Jet HR:
+RAL: ${formatCur(ral)}
+Netto Annuale: ${formatCur(nettoAnnuale)}
+Netto Mensile (${mensilita} mensilità): ${formatCur(nettoMensile)}
+Totale Trattenute e Tasse: ${formatCur(tasseTotali)} (${pctTasse}%)`;
+
+      document.getElementById('results').classList.remove('hidden');
+    });
+  }
+
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      if (currentSummaryText) {
+        navigator.clipboard.writeText(currentSummaryText).then(() => {
+          copyBtn.textContent = "✅ Copiato negli Appunti!";
+          setTimeout(() => {
+            copyBtn.textContent = "📋 Copia Riepilogo Simulazione";
+          }, 2500);
+        });
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>
